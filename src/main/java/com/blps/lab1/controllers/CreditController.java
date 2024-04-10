@@ -1,8 +1,6 @@
 package com.blps.lab1.controllers;
 
-import com.blps.lab1.model.Cards;
 import com.blps.lab1.model.CreditOffer;
-import com.blps.lab1.repo.CardRepository;
 import com.blps.lab1.repo.CreditRepository;
 import com.blps.lab1.repo.UserRepository;
 import com.blps.lab1.service.CreditService;
@@ -11,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController

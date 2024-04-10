@@ -10,8 +10,6 @@ import com.blps.lab1.utils.Bonus;
 import com.blps.lab1.utils.CardType;
 import com.blps.lab1.utils.Goal;
 import com.blps.lab1.utils.mapper.CreditOfferMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,11 +37,7 @@ public class CreditService {
 
     }
 
-    public List<Cards> getCheckedCards(CreditOffer creditOffer) {
 
-        List<Cards> checkedCards = creditOffer.getCards().stream().toList();
-        return checkedCards;
-    }
 
     public CreditOfferDTO setOffer(CreditOffer creditOffer, Long id) {
 

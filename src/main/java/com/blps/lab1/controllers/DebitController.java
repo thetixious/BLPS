@@ -3,19 +3,15 @@ package com.blps.lab1.controllers;
 import com.blps.lab1.dto.DebitOfferDTO;
 import com.blps.lab1.model.Cards;
 import com.blps.lab1.model.DebitOffer;
-import com.blps.lab1.model.User;
-import com.blps.lab1.repo.CardRepository;
 import com.blps.lab1.repo.DebitRepository;
 import com.blps.lab1.repo.UserRepository;
 import com.blps.lab1.service.DebitService;
 import com.blps.lab1.utils.mapper.DebitCardMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/debit")
@@ -49,7 +45,7 @@ public class DebitController {
         if (cardsList.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Нет карт с таким набором бонусов или целей");
 
-        return ResponseEntity.status(HttpStatus.OK).body(cardsList.stream().map(debitCardMapper::toDTO).toList());
+        return ResponseEntity.ok(cardsList.stream().map(debitCardMapper::toDTO).toList());
 
     }
 
@@ -62,7 +58,7 @@ public class DebitController {
         DebitOffer debitOffer = debitService.DTOToDebitOffer(debitOfferDTO);
         debitOffer.setCard_user(userRepository.findById(id).get());
 
-        return ResponseEntity.status(HttpStatus.OK).body(debitService.debitOfferToDTO(debitRepository.save(debitOffer)));
+        return ResponseEntity.ok(debitService.debitOfferToDTO(debitRepository.save(debitOffer)));
 
     }
 

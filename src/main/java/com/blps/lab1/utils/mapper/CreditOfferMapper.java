@@ -1,9 +1,7 @@
 package com.blps.lab1.utils.mapper;
 
 import com.blps.lab1.dto.CreditOfferDTO;
-import com.blps.lab1.dto.DebitOfferDTO;
 import com.blps.lab1.model.CreditOffer;
-import com.blps.lab1.model.DebitOffer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

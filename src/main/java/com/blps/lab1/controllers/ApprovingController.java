@@ -1,21 +1,14 @@
 package com.blps.lab1.controllers;
 
-import com.blps.lab1.model.Cards;
 import com.blps.lab1.model.CreditOffer;
-import com.blps.lab1.repo.CardRepository;
 import com.blps.lab1.repo.CreditRepository;
+import com.blps.lab1.repo.UserRepository;
 import com.blps.lab1.utils.mapper.CreditCardMapper;
 import com.blps.lab1.utils.mapper.CreditOfferMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +18,15 @@ public class ApprovingController {
 
     private final CreditRepository creditRepository;
     private final CreditOfferMapper creditOfferMapper;
+    private final UserRepository userRepository;
     private final CreditCardMapper creditCardMapper;
 
     public ApprovingController(CreditRepository creditRepository,
-                               CreditOfferMapper creditOfferMapper,
+                               CreditOfferMapper creditOfferMapper, UserRepository userRepository,
                                CreditCardMapper creditCardMapper) {
         this.creditRepository = creditRepository;
         this.creditOfferMapper = creditOfferMapper;
+        this.userRepository = userRepository;
         this.creditCardMapper = creditCardMapper;
     }
 
@@ -44,6 +39,8 @@ public class ApprovingController {
     @PostMapping(value = "/{id}/result")
     public ResponseEntity<?> result(@PathVariable(value = "id") Long id, @RequestBody List<Long> cardsId) {
 
+        if (userRepository.findById(id).isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Нет пользователя с данным аутентификатором");
 
         CreditOffer creditOffer = creditRepository.findByUserId(id);
 
