@@ -55,6 +55,9 @@ public class DebitController {
     @PostMapping(value = "/{id}/offer")
     public ResponseEntity<?> createOffer(@PathVariable(name = "id") Long id, @RequestBody DebitOfferDTO debitOfferDTO) {
 
+        if (userRepository.findById(id).isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Нет пользователя с данным аутентификатором");
+
         if (debitRepository.findByUserId(id) != null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Пользователь уже оставил запрос");
 

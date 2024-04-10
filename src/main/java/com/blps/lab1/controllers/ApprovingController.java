@@ -35,6 +35,11 @@ public class ApprovingController {
 
     @GetMapping(value = "/{id}/info")
     public ResponseEntity<?> info(@PathVariable(value = "id") Long id) {
+        if (userRepository.findById(id).isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Нет пользователя с данным аутентификатором");
+        if (creditRepository.findByUserId(id) == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("У пользователя нет CreditOffer");
+
         CreditOffer creditOffer = creditRepository.findByUserId(id);
         return ResponseEntity.status(HttpStatus.OK).body(creditOfferMapper.toDTO(creditOffer));
     }

@@ -53,6 +53,9 @@ public class CreditController {
         if (userRepository.findById(id).isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Нет пользователя с данным аутентификатором");
 
+        if (creditRepository.findByUserId(id) == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Пользователь еще не оставил запрос");
+
         CreditOffer creditOffer = creditRepository.findByUserId(id);
         if (!creditOffer.getReady())
             return ResponseEntity.status(HttpStatus.OK).body("Запрос в процессе обработки");

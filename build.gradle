@@ -40,6 +40,9 @@ compileJava {
 			'-Amapstruct.defaultComponentModel=spring'
 	]
 }
+bootJar {
+	archiveFileName = 'my-spring-boot-app.jar' // Имя JAR-файла
+}
 
 tasks.named('test') {
 	useJUnitPlatform()

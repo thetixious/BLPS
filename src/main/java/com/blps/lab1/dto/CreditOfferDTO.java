@@ -7,15 +7,10 @@ import lombok.Data;
 
 @Data
 public class CreditOfferDTO {
-    @JsonIgnore
     private String email;
-    @JsonIgnore
     private String passport;
-    @JsonIgnore
     private Double salary;
-    @JsonIgnore
     private Boolean approved;
-    @JsonIgnore
     private Boolean ready;
 
     private Goal goal;

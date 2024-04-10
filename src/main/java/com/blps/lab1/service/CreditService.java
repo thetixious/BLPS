@@ -45,6 +45,7 @@ public class CreditService {
         creditOffer.setReady(false);
         creditOffer.setApproved(false);
         creditOffer.setCards(getUncheckedCards(creditOffer));
+        creditOffer.setCredit_limit(creditOfferDTO.getCreditLimit());
         return creditOfferMapper.toDTO(creditRepository.save(creditOffer));
 
     }

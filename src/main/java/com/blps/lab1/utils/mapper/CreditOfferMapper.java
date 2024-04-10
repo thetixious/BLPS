@@ -20,7 +20,11 @@ public interface CreditOfferMapper {
     @Mapping(source = "goal", target = "goal")
     @Mapping(source = "bonus", target = "bonus")
     @Mapping(source = "creditLimit", target = "credit_limit")
-
+    @Mapping(target = "card_user.email", ignore = true)
+    @Mapping(target = "card_user.passport", ignore = true)
+    @Mapping(target = "card_user.salary", ignore = true)
+    @Mapping(target = "approved", ignore = true)
+    @Mapping(target = "ready", ignore = true)
     CreditOffer toEntity(CreditOfferDTO creditOfferDTO);
 
 }
