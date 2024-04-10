@@ -1,10 +1,14 @@
 package com.blps.lab1.controllers;
 
+import com.blps.lab1.dto.CreditCardDTO;
+import com.blps.lab1.dto.CreditOfferDTO;
+import com.blps.lab1.dto.DebitOfferDTO;
 import com.blps.lab1.model.CreditOffer;
 import com.blps.lab1.repo.CreditRepository;
 import com.blps.lab1.repo.UserRepository;
 import com.blps.lab1.service.CreditService;
 import com.blps.lab1.utils.mapper.CreditCardMapper;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +34,7 @@ public class CreditController {
     }
 
     @PostMapping(value = "/{id}/offer")
-    public ResponseEntity<?> offer(@PathVariable(name = "id") Long id, @RequestBody CreditOffer creditOffer) {
+    public ResponseEntity<?> offer(@PathVariable(name = "id") Long id, @RequestBody CreditOfferDTO creditOfferDTO) {
 
         if (userRepository.findById(id).isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Нет пользователя с данным id");
@@ -38,7 +42,7 @@ public class CreditController {
         if (creditRepository.findByUserId(id) != null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Пользователь уже оставил запрос");
 
-        return ResponseEntity.status(HttpStatus.OK).body(creditService.setOffer(creditOffer,id));
+        return ResponseEntity.status(HttpStatus.OK).body(creditService.setOffer(creditOfferDTO,id));
 
 
     }

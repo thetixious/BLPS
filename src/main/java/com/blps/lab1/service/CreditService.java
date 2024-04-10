@@ -39,8 +39,8 @@ public class CreditService {
 
 
 
-    public CreditOfferDTO setOffer(CreditOffer creditOffer, Long id) {
-
+    public CreditOfferDTO setOffer(CreditOfferDTO creditOfferDTO, Long id) {
+        CreditOffer creditOffer = creditOfferMapper.toEntity(creditOfferDTO);
         creditOffer.setCard_user(userRepository.findById(id).get());
         creditOffer.setReady(false);
         creditOffer.setApproved(false);

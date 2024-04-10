@@ -1,5 +1,6 @@
 package com.blps.lab1.controllers;
 
+import com.blps.lab1.dto.DebitCardDTO;
 import com.blps.lab1.dto.DebitOfferDTO;
 import com.blps.lab1.model.Cards;
 import com.blps.lab1.model.DebitOffer;
@@ -7,6 +8,7 @@ import com.blps.lab1.repo.DebitRepository;
 import com.blps.lab1.repo.UserRepository;
 import com.blps.lab1.service.DebitService;
 import com.blps.lab1.utils.mapper.DebitCardMapper;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/debit")
+//@Api(tags = "Debit card manager")
 public class DebitController {
 
     private final DebitRepository debitRepository;

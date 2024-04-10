@@ -1,10 +1,13 @@
 package com.blps.lab1.controllers;
 
+import com.blps.lab1.dto.CreditCardDTO;
+import com.blps.lab1.dto.CreditOfferDTO;
 import com.blps.lab1.model.CreditOffer;
 import com.blps.lab1.repo.CreditRepository;
 import com.blps.lab1.repo.UserRepository;
 import com.blps.lab1.utils.mapper.CreditCardMapper;
 import com.blps.lab1.utils.mapper.CreditOfferMapper;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
