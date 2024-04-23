@@ -1,0 +1,67 @@
+package com.blps.lab1.service;
+
+import com.blps.lab1.model.CreditOffer;
+import com.blps.lab1.repo.CreditRepository;
+import com.blps.lab1.repo.UserRepository;
+import com.blps.lab1.utils.mapper.CreditCardMapper;
+import com.blps.lab1.utils.mapper.CreditOfferMapper;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ApprovingService {
+    private final CommonService commonService;
+    private final CreditRepository creditRepository;
+    private final CreditOfferMapper creditOfferMapper;
+    private final UserRepository userRepository;
+    private final CreditCardMapper creditCardMapper;
+
+
+    public ApprovingService(CommonService commonService, CreditRepository creditRepository, CreditOfferMapper creditOfferMapper, UserRepository userRepository, CreditCardMapper creditCardMapper) {
+        this.commonService = commonService;
+        this.creditRepository = creditRepository;
+        this.creditOfferMapper = creditOfferMapper;
+        this.userRepository = userRepository;
+        this.creditCardMapper = creditCardMapper;
+    }
+
+    public ResponseEntity<?> getInfo(Long id){
+
+        ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
+        ResponseEntity<?> offerCheckResponse = commonService.offerExistenceCheck(id,true);
+
+        if (userCheckResponse != null)
+            return userCheckResponse;
+
+        if (offerCheckResponse != null)
+            return offerCheckResponse;
+
+        CreditOffer creditOffer = creditRepository.findByUserId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(creditOfferMapper.toDTO(creditOffer));
+    }
+
+    public ResponseEntity<?> getResult(Long id, List<Long> cardsId){
+        ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
+
+        if (userCheckResponse != null)
+            return userCheckResponse;
+
+
+        CreditOffer creditOffer = creditRepository.findByUserId(id);
+
+        if (creditOffer.getReady())
+            return ResponseEntity.status(HttpStatus.OK).body("Credit offer уже закрыт");
+
+        creditOffer.getCards().removeIf(cards -> !cardsId.contains(cards.getId()));
+        creditOffer.setApproved(!creditOffer.getCards().isEmpty());
+        creditOffer.setReady(true);
+
+        return ResponseEntity.status(HttpStatus.OK).body(creditRepository.save(creditOffer).getCards().stream().
+                map(creditCardMapper::toDTO).collect(Collectors.toList()));
+    }
+}
