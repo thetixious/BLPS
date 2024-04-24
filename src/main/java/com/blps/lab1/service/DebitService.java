@@ -1,8 +1,10 @@
 package com.blps.lab1.service;
 
 import com.blps.lab1.dto.DebitOfferDTO;
+import com.blps.lab1.dto.UserDataDTO;
 import com.blps.lab1.model.Cards;
 import com.blps.lab1.model.DebitOffer;
+import com.blps.lab1.model.User;
 import com.blps.lab1.repo.CardRepository;
 
 import com.blps.lab1.repo.DebitRepository;
@@ -17,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DebitService {
@@ -86,6 +89,7 @@ public class DebitService {
 
         return ResponseEntity.ok(debitOfferToDTO(debitRepository.save(debitOffer)));
     }
+
 
 
 }

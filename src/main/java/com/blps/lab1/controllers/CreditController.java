@@ -2,6 +2,7 @@ package com.blps.lab1.controllers;
 
 import com.blps.lab1.dto.CreditOfferDTO;
 import com.blps.lab1.dto.UserDataDTO;
+import com.blps.lab1.service.CommonService;
 import com.blps.lab1.service.CreditService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/credit")
 public class CreditController {
     private final CreditService creditService;
+    private final CommonService commonService;
 
-    public CreditController(CreditService creditService) {
+    public CreditController(CreditService creditService, CommonService commonService) {
 
         this.creditService = creditService;
+        this.commonService = commonService;
     }
 
     @PostMapping(value = "/{id}/offer")
@@ -32,6 +35,6 @@ public class CreditController {
 
     @PostMapping(value = "{id}/fill_profile")
     public ResponseEntity<?> fillProfile(@PathVariable(name = "id") Long id, @RequestBody UserDataDTO userDataDTO){
-        return creditService.toFillProfile(id,userDataDTO);
+        return commonService.toFillProfile(id,userDataDTO);
     }
 }

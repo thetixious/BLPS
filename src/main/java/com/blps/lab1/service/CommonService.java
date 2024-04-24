@@ -1,10 +1,14 @@
 package com.blps.lab1.service;
 
+import com.blps.lab1.dto.UserDataDTO;
+import com.blps.lab1.model.User;
 import com.blps.lab1.repo.CreditRepository;
 import com.blps.lab1.repo.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class CommonService {
@@ -28,6 +32,22 @@ public class CommonService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Пользователь уже оставил запрос");
         }
         return null;
+    }
+    public ResponseEntity<?> toFillProfile(Long id, UserDataDTO userDataDTO) {
+
+        ResponseEntity<?> userCheckResponse = userCheck(id);
+
+        if (userCheckResponse != null)
+            return userCheckResponse;
+
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.get();
+        user.setPassport(userDataDTO.getPassport());
+        user.setSalary(userDataDTO.getSalary());
+        user.setIs_fill(true);
+        userRepository.save(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
 

@@ -98,19 +98,5 @@ public class CreditService {
         return ResponseEntity.status(HttpStatus.OK).body(setOffer(creditOfferDTO, id));
     }
 
-    public ResponseEntity<?> toFillProfile(Long id, UserDataDTO userDataDTO) {
 
-        ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
-        if (userCheckResponse != null)
-            return userCheckResponse;
-
-        Optional<User> userOptional = userRepository.findById(id);
-        User user = userOptional.get();
-        user.setPassport(userDataDTO.getPassport());
-        user.setSalary(userDataDTO.getSalary());
-        user.setIs_fill(true);
-        userRepository.save(user);
-
-        return ResponseEntity.status(HttpStatus.OK).body(user);
-    }
 }
