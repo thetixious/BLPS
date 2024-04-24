@@ -17,6 +17,7 @@ public class User {
     private String email;
     private String passport;
     private Double salary;
+    private Boolean is_fill;
 
 
     public User(String name, String surname, String email, String passport, Double salary) {

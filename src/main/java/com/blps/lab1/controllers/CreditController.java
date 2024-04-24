@@ -1,6 +1,7 @@
 package com.blps.lab1.controllers;
 
 import com.blps.lab1.dto.CreditOfferDTO;
+import com.blps.lab1.dto.UserDataDTO;
 import com.blps.lab1.service.CreditService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,10 @@ public class CreditController {
 
         return creditService.getApprovedCards(id);
 
+    }
+
+    @PostMapping(value = "{id}/fill_profile")
+    public ResponseEntity<?> fillProfile(@PathVariable(name = "id") Long id, @RequestBody UserDataDTO userDataDTO){
+        return creditService.toFillProfile(id,userDataDTO);
     }
 }

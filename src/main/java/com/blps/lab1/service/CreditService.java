@@ -1,8 +1,10 @@
 package com.blps.lab1.service;
 
 import com.blps.lab1.dto.CreditOfferDTO;
+import com.blps.lab1.dto.UserDataDTO;
 import com.blps.lab1.model.Cards;
 import com.blps.lab1.model.CreditOffer;
+import com.blps.lab1.model.User;
 import com.blps.lab1.repo.CardRepository;
 import com.blps.lab1.repo.CreditRepository;
 import com.blps.lab1.repo.UserRepository;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +60,7 @@ public class CreditService {
 
     }
 
+
     public ResponseEntity<?> getApprovedCards(Long id) {
 
         ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
@@ -67,6 +71,11 @@ public class CreditService {
 
         if (offerCheckResponse != null)
             return offerCheckResponse;
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.get();
+        if (!user.getIs_fill())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Сначала заполните профиль");
+
 
 
         CreditOffer creditOffer = creditRepository.findByUserId(id);
@@ -89,4 +98,19 @@ public class CreditService {
         return ResponseEntity.status(HttpStatus.OK).body(setOffer(creditOfferDTO, id));
     }
 
+    public ResponseEntity<?> toFillProfile(Long id, UserDataDTO userDataDTO) {
+
+        ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
+        if (userCheckResponse != null)
+            return userCheckResponse;
+
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.get();
+        user.setPassport(userDataDTO.getPassport());
+        user.setSalary(userDataDTO.getSalary());
+        user.setIs_fill(true);
+        userRepository.save(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 }
