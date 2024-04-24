@@ -18,15 +18,13 @@ public class ApprovingService {
     private final CommonService commonService;
     private final CreditRepository creditRepository;
     private final CreditOfferMapper creditOfferMapper;
-    private final UserRepository userRepository;
     private final CreditCardMapper creditCardMapper;
 
 
-    public ApprovingService(CommonService commonService, CreditRepository creditRepository, CreditOfferMapper creditOfferMapper, UserRepository userRepository, CreditCardMapper creditCardMapper) {
+    public ApprovingService(CommonService commonService, CreditRepository creditRepository, CreditOfferMapper creditOfferMapper, CreditCardMapper creditCardMapper) {
         this.commonService = commonService;
         this.creditRepository = creditRepository;
         this.creditOfferMapper = creditOfferMapper;
-        this.userRepository = userRepository;
         this.creditCardMapper = creditCardMapper;
     }
 
@@ -43,6 +41,7 @@ public class ApprovingService {
 
         CreditOffer creditOffer = creditRepository.findByUserId(id);
         return ResponseEntity.status(HttpStatus.OK).body(creditOfferMapper.toDTO(creditOffer));
+//        return ResponseEntity.status(HttpStatus.OK).body(creditOffer);
     }
 
     public ResponseEntity<?> getResult(Long id, List<Long> cardsId){

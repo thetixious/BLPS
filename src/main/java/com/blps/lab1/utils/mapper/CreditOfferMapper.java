@@ -15,6 +15,7 @@ public interface CreditOfferMapper {
     @Mapping(source = "ready", target = "ready")
     @Mapping(source = "goal", target = "goal")
     @Mapping(source = "bonus", target = "bonus")
+    @Mapping(source = "cards", target = "cards")
     CreditOfferDTO toDTO(CreditOffer creditOffer);
 
     @Mapping(source = "goal", target = "goal")
@@ -25,6 +26,8 @@ public interface CreditOfferMapper {
     @Mapping(target = "card_user.salary", ignore = true)
     @Mapping(target = "approved", ignore = true)
     @Mapping(target = "ready", ignore = true)
+    @Mapping(target = "cards", ignore = true)
+    @Mapping(target = "id", ignore = true)
     CreditOffer toEntity(CreditOfferDTO creditOfferDTO);
 
 }
