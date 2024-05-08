@@ -4,7 +4,8 @@ import com.blps.lab1.utils.Goal;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,6 +14,7 @@ public class CreditOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -35,7 +37,14 @@ public class CreditOffer {
             joinColumns = @JoinColumn(name = "credit_offer_id"),
             inverseJoinColumns = @JoinColumn(name = "card_id")
     )
-    private List<Cards> cards;
+    private Set<Cards> cards = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name="credit_offer_preferred_cards",
+            joinColumns = @JoinColumn(name="credit_offer_id"),
+            inverseJoinColumns = @JoinColumn(name="card_id")
+    )
+    private Set<Cards> preferredCards = new HashSet<>();
 
 
 }

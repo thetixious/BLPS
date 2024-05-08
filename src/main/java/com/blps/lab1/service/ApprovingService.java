@@ -2,10 +2,8 @@ package com.blps.lab1.service;
 
 import com.blps.lab1.model.CreditOffer;
 import com.blps.lab1.repo.CreditRepository;
-import com.blps.lab1.repo.UserRepository;
 import com.blps.lab1.utils.mapper.CreditCardMapper;
 import com.blps.lab1.utils.mapper.CreditOfferMapper;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,7 @@ public class ApprovingService {
     public ResponseEntity<?> getInfo(Long id){
 
         ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
-        ResponseEntity<?> offerCheckResponse = commonService.offerExistenceCheck(id,true);
+        ResponseEntity<?> offerCheckResponse = commonService.offerExistenceCheck(id,true, false);
 
         if (userCheckResponse != null)
             return userCheckResponse;

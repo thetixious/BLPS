@@ -5,6 +5,8 @@ import com.blps.lab1.dto.UserDataDTO;
 import com.blps.lab1.service.CommonService;
 import com.blps.lab1.service.DebitService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,23 +23,24 @@ public class DebitController {
         this.commonService = commonService;
     }
 
-    @GetMapping(value = "/{id}/cards")
-    public ResponseEntity<?> suitableCards(@PathVariable(name = "id") Long id) {
+    @Operation(summary = "Вывод подходящих карт")
+    @GetMapping(value = "/cards")
+    public ResponseEntity<?> suitableCards(@RequestHeader("Authorization") String authorizationHeader) {
 
-        return debitService.getCards(id);
-
-    }
-
-    @PostMapping(value = "/{id}/offer")
-    public ResponseEntity<?> createOffer(@PathVariable(name = "id") Long id, @RequestBody DebitOfferDTO debitOfferDTO) {
-
-        return debitService.creatOffer(id, debitOfferDTO);
+        return debitService.getCards(commonService.extractIdFromJWT(authorizationHeader));
 
     }
+    @Operation(summary = "Создание заявки на дебетовую карту")
+    @PostMapping(value = "/offer")
+    public ResponseEntity<?> createOffer(@RequestHeader("Authorization") String authorizationHeader,@Valid @RequestBody DebitOfferDTO debitOfferDTO) {
 
-    @PostMapping(value = "{id}/fill_profile")
-    public ResponseEntity<?> fillProfile (@PathVariable(name = "id") Long id, @RequestBody UserDataDTO userDataDTO){
-        return commonService.toFillProfile(id,userDataDTO);
+        return debitService.creatOffer(commonService.extractIdFromJWT(authorizationHeader), debitOfferDTO);
+
+    }
+    @Operation(summary = "Заполнение профиля")
+    @PostMapping(value = "/fill_profile")
+    public ResponseEntity<?> fillProfile (@RequestHeader("Authorization") String authorizationHeader, @Valid @RequestBody UserDataDTO userDataDTO){
+        return commonService.toFillProfile(commonService.extractIdFromJWT(authorizationHeader),userDataDTO);
     }
 
 

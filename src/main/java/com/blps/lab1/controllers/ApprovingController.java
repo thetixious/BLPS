@@ -1,6 +1,10 @@
 package com.blps.lab1.controllers;
 
+import com.blps.lab1.dto.utils.DataRequest;
+import com.blps.lab1.dto.utils.LongWrapper;
 import com.blps.lab1.service.ApprovingService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,18 +21,20 @@ public class ApprovingController {
 
         this.approvingService = approvingService;
     }
+    @Operation(summary = "Вывод информации о пользователе и его заявке на кредитную карту")
+    @GetMapping(value = "/info")
+    public ResponseEntity<?> info(@Valid @RequestBody LongWrapper longWrapper) {
 
-    @GetMapping(value = "/{id}/info")
-    public ResponseEntity<?> info(@PathVariable(value = "id") Long id) {
-
-        return approvingService.getInfo(id);
+        return approvingService.getInfo(longWrapper.getId());
 
     }
 
-    @PostMapping(value = "/{id}/result")
-    public ResponseEntity<?> result(@PathVariable(value = "id") Long id, @RequestBody List<Long> cardsId) {
-
-        return approvingService.getResult(id, cardsId);
+    @Operation(summary="Выбор одобренных предложений")
+    @PostMapping(value = "/result")
+    public ResponseEntity<?> result(@RequestBody DataRequest approvalRequest) {
+        LongWrapper longWrapper = approvalRequest.getLongWrapper();
+        List<Long> cardsId = approvalRequest.getCardsId();
+        return approvingService.getResult(longWrapper.getId(), cardsId);
 
     }
 

@@ -1,34 +1,63 @@
 package com.blps.lab1.model;
 
+import com.blps.lab1.utils.Role;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 
-@Data
 @Entity
-@Table(name="my_user")
-public class User {
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "my_user")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String username;
     private String name;
     private String surname;
     private String email;
+    private String password;
     private String passport;
     private Double salary;
     private Boolean is_fill;
+    @Enumerated
+    private Role role;
 
 
-    public User(String name, String surname, String email, String passport, Double salary) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.passport = passport;
-        this.salary = salary;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public User() {
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

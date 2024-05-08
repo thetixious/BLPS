@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class DebitService {
@@ -53,7 +54,7 @@ public class DebitService {
     public ResponseEntity<?> getCards(Long id) {
 
         ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
-        ResponseEntity<?> offerCheckResponse = commonService.offerExistenceCheck(id, true);
+        ResponseEntity<?> offerCheckResponse = commonService.offerExistenceCheck(id, true,true);
 
         if (userCheckResponse != null)
             return userCheckResponse;
@@ -61,10 +62,15 @@ public class DebitService {
         if (offerCheckResponse != null)
             return offerCheckResponse;
 
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.get();
+        if (!user.getIs_fill())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Сначала заполните профиль");
+
         DebitOffer debitOffer = debitRepository.findByUserId(id);
         Goal goal = debitOffer.getGoal();
         Bonus bonus = debitOffer.getBonus();
-        List<Cards> cardsList = cardRepository.findAllByGoalOrBonusAndType(goal, bonus, CardType.DEBIT);
+        Set<Cards> cardsList = cardRepository.findAllByTypeAndGoalOrBonus(CardType.DEBIT,goal, bonus);
 
         if (cardsList.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Нет карт с таким набором бонусов или целей");
@@ -75,7 +81,7 @@ public class DebitService {
     public ResponseEntity<?> creatOffer(Long id, DebitOfferDTO debitOfferDTO) {
 
         ResponseEntity<?> userCheckResponse = commonService.userCheck(id);
-        ResponseEntity<?> offerCheckResponse = commonService.offerExistenceCheck(id, false);
+        ResponseEntity<?> offerCheckResponse = commonService.offerExistenceCheck(id, false, true);
 
         if (userCheckResponse != null)
             return userCheckResponse;
